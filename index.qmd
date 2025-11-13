@@ -1,0 +1,203 @@
+---
+title: "Open Science & Open Source Ecosystem Map"
+format:
+  html:
+    toc: true
+    theme: cosmo
+    embed-resources: true
+    smooth-scroll: true
+lang: en
+---
+
+This page visualizes key organizations, platforms, and initiatives that make up the open science and open source ecosystem. Categories span community groups, infrastructure, funding, publishing, and beyond. Click on a category to jump to its section.
+
+_If you know an organization that should be featured here, [add it to the spreadsheet](https://docs.google.com/spreadsheets/d/1zJCC9ZTXxz4J8aUY_FdyI3b0x34zzwi_p_KUymIOyxw/edit?usp=sharing) and and rebuild this report!_
+
+Tables are generated automatically from the [community spreadsheet](https://docs.google.com/spreadsheets/d/1zJCC9ZTXxz4J8aUY_FdyI3b0x34zzwi_p_KUymIOyxw/edit?usp=sharing).
+
+```{r message=FALSE, warning=FALSE}
+#| include: false
+library(readr)
+library(dplyr)
+library(knitr)
+
+# This is the CSV export URL for the Google Sheet (export as CSV)
+sheet_csv <- "https://docs.google.com/spreadsheets/d/1zJCC9ZTXxz4J8aUY_FdyI3b0x34zzwi_p_KUymIOyxw/export?format=csv"
+
+orgs <- read_csv(sheet_csv, show_col_types = FALSE)
+
+# Make sure names and links are clean
+orgs <- orgs %>%
+  mutate(
+    Website = ifelse(!grepl("^https?://", Website), paste0("https://", Website), Website),
+    Category = trimws(Category),
+    Organization = trimws(Organization),
+    Description = trimws(Description)
+  )
+```
+
+
+```{r}
+#| include: false
+categories <- unique(orgs$Category)
+categories
+```
+
+---
+
+## Categories
+
+- [Community & Networking](#community--networking)
+- [Funding & Grants](#funding--grants)
+- [Infrastructure & Platforms](#infrastructure--platforms)
+- [Training & Education](#training--education)
+- [Publishing & Peer Review](#publishing--peer-review)
+- [Standards & Best Practices](#standards--best-practices)
+- [Advocacy & Policy](#advocacy--policy)
+- [Collaboration Tools](#collaboration-tools)
+- [Others Categories](#other-categories)
+
+---
+
+## Community & Networking{#community--networking}
+
+```{r}
+#| echo: false
+community_tbl <- orgs %>%
+  filter(tolower(Category) == "community & networking") %>%
+  select(Organization, Description, Website)
+
+kable(community_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Funding & Grants{#funding--grants}
+
+```{r}
+#| echo: false
+funding_tbl <- orgs %>%
+  filter(tolower(Category) == "funding & grants") %>%
+  select(Organization, Description, Website)
+
+kable(funding_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Infrastructure & Platforms{#infrastructure--platforms}
+
+```{r}
+#| echo: false
+infra_tbl <- orgs %>%
+  filter(tolower(Category) == "infrastructure & platforms") %>%
+  select(Organization, Description, Website)
+
+kable(infra_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Training & Education{#training--education}
+
+```{r}
+#| echo: false
+training_tbl <- orgs %>%
+  filter(tolower(Category) == "training & education") %>%
+  select(Organization, Description, Website)
+
+kable(training_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Publishing & Peer Review{#publishing--peer-review}
+
+```{r}
+#| echo: false
+publishing_tbl <- orgs %>%
+  filter(tolower(Category) == "publishing & peer review") %>%
+  select(Organization, Description, Website)
+
+kable(publishing_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Standards & Best Practices{#standards--best-practices}
+
+```{r}
+#| echo: false
+standards_tbl <- orgs %>%
+  filter(tolower(Category) == "standards & best practices") %>%
+  select(Organization, Description, Website)
+
+kable(standards_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Advocacy & Policy{#advocacy--policy}
+
+```{r}
+#| echo: false
+advocacy_tbl <- orgs %>%
+  filter(tolower(Category) == "advocacy & policy") %>%
+  select(Organization, Description, Website)
+
+kable(advocacy_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## Collaboration Tools{#collaboration-tools}
+
+```{r}
+#| echo: false
+collab_tbl <- orgs %>%
+  filter(tolower(Category) == "collaboration tools") %>%
+  select(Organization, Description, Website)
+
+kable(collab_tbl, escape = FALSE, format = "html", col.names = c("Organization", "Description", "Website"))
+```
+
+---
+
+## All Other Categories{#other-categories}
+
+```{r}
+#| echo: false
+other_tbl <- orgs %>%
+  filter(!(tolower(Category) %in%
+     c("community & networking",
+       "funding & grants",
+       "infrastructure & platforms",
+       "training & education",
+       "publishing & peer review",
+       "standards & best practices",
+       "advocacy & policy",
+       "collaboration tools"))) %>%
+  select(Category, Organization, Description, Website)
+
+if (nrow(other_tbl) > 0) {
+  kable(other_tbl, escape = FALSE, format = "html", col.names = c("Category", "Organization", "Description", "Website"))
+} else {
+  cat("No additional categories.")
+}
+```
+
+---
+
+## Add or Update Organizations
+
+You can add or request corrections to the list by editing the [Google Sheet](https://docs.google.com/spreadsheets/d/1zJCC9ZTXxz4J8aUY_FdyI3b0x34zzwi_p_KUymIOyxw/edit?usp=sharing).  
+This report will update automatically on rebuild!
+
+---
+
+## About
+
+This map is curated by the open science community.  
+First version by [@yabellini](https://github.com/yabellini). 
+Updated by ORCA CAP Projects 2025
+
